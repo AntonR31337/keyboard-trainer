@@ -87,3 +87,5 @@ async function getData() {
     }
   }
 }
+
+//added smt...
