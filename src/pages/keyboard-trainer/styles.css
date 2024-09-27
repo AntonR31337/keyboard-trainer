@@ -1,0 +1,24 @@
+.wrapper {
+  display: flex;
+  font-size: 50px;
+}
+
+.left {
+  display: flex;
+  justify-content: flex-end;
+  color: darkgray;
+  background-color: rgba(202, 199, 199, 0.577);
+}
+
+.right {
+  text-align: left;
+}
+
+.left,
+.right {
+  min-width: 50%;
+  text-overflow: clip;
+  white-space: pre;
+  text-wrap: nowrap;
+  overflow: hidden;
+}
