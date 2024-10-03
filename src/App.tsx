@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import KeyboardTrainer from "./pages/keyboard-trainer";
+import Home from "./pages/home";
 
 const { Header, Sider, Content } = Layout;
 
@@ -36,11 +37,6 @@ const App: React.FC = () => {
               key: "/",
               icon: <HomeOutlined />,
               label: "Главная",
-            },
-            {
-              key: "/keyboard-trainer",
-              icon: <VideoCameraOutlined />,
-              label: "Keyboard Trainer",
             },
             {
               key: "3",
@@ -74,9 +70,12 @@ const App: React.FC = () => {
           }}
         >
           <Routes>
-            <Route path='/' element={<h1>Home page</h1>} />
+            <Route path='/' element={<Home />} />
             <Route path='/keyboard-trainer' element={<KeyboardTrainer />} />
-            <Route path='*' element={<h1>404 No page</h1>} />
+            <Route
+              path='*'
+              element={<h1 style={{ textAlign: "center" }}>404 No page</h1>}
+            />
           </Routes>
         </Content>
       </Layout>
