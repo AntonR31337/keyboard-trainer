@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Row, Statistic } from "antd";
+import { Card, Col, Row, Statistic } from "antd";
 
 const StatisticPage: React.FC = () => {
   return (

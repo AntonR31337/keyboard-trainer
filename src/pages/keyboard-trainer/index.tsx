@@ -4,34 +4,32 @@ import "./styles.css";
 import Metronome from "../../components/metronome";
 import StatisticPage from "../../components/statistic";
 import { useNavigate } from "react-router-dom";
+import { textStore } from "../../store/text-store";
+import { observer } from "mobx-react-lite";
+import { observable } from "mobx";
 
 const { Countdown } = Statistic;
 
-const URL = "https://fish-text.ru/get?";
-
-const KeyboardTrainer = () => {
+const KeyboardTrainer = observer(() => {
   const navigate = useNavigate();
 
-  const [leftText, setLeftText] = useState<string>("");
-  const [rightText, setRightText] = useState<string>("");
+  const {
+    rightText,
+    leftText,
+    setRightText,
+    setLeftText,
+    resetRightText,
+    resetLeftText,
+  } = textStore;
 
   const [isFinish, setIsFinish] = useState<boolean>(false);
   const [deadline, setDeadline] = useState<number>(0);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-  const getNewText = (): void => {
-    fetch(URL + "&type=sentence&number=1").then((res) =>
-      res
-        .json()
-        .then(({ text }) =>
-          setRightText((prev) =>
-            prev.concat(prev.length > 0 ? " " + text : text)
-          )
-        )
-    );
-  };
-
-  useEffect(() => getNewText(), []);
+  useEffect(() => {
+    textStore.getNewText();
+    console.log("useEffect");
+  }, []);
 
   const checkDeadline = () => {
     if (!isFinish && deadline < Date.now()) {
@@ -43,23 +41,25 @@ const KeyboardTrainer = () => {
     const letter = event.key;
 
     if (rightText.length < 20) {
-      getNewText();
+      console.log("handleKeyPress");
+      textStore.getNewText();
     }
 
     if (rightText.length > 0 && letter === rightText[0]) {
       checkDeadline();
 
-      setLeftText((prev) => prev.concat(letter));
-      setRightText((prev) => prev.slice(1));
+      setLeftText(leftText.concat(letter));
+      setRightText(rightText.slice(1));
     }
   };
 
   const startGame = () => {
     setIsFinish(false);
     setIsOpenModal(false);
-    setLeftText("");
-    setRightText("");
-    getNewText();
+    resetLeftText();
+    resetRightText();
+    textStore.getNewText();
+    console.log("startGame");
   };
 
   const onFinish = () => {
@@ -116,6 +116,6 @@ const KeyboardTrainer = () => {
       </Modal>
     </>
   );
-};
+});
 
-export default KeyboardTrainer;
+export default observable(KeyboardTrainer);
