@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 
 const URL = "https://fish-text.ru/get?";
 
@@ -17,24 +17,23 @@ class TextStore {
   }
 
   getNewText = async (): Promise<void> => {
-    try {
-      this.loading = true;
 
-      await fetch(URL + "&type=sentence&number=1").then((res) =>
-        res
-          .json()
-          .then(
-            ({ text }: IText) =>
-              (this.rightText = this.rightText.length > 0 ? " " + text : text)
-          )
-      );
-      runInAction(() => {
+      try {
+        this.loading = true;
+
+        const {text}: IText = await fetch(URL + "&type=sentence&number=1")
+            .then(res => res.json())
+
+        runInAction(() => {
+
+          this.rightText += " " + text
+          this.loading = false;
+        });
+      } catch (error) {
+
         this.loading = false;
-      });
-    } catch (error) {
-      this.loading = false;
-      throw error;
-    }
+        throw error;
+      }
   };
 
   setRightText = (value: string) => {

@@ -3,13 +3,12 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  VideoCameraOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import KeyboardTrainer from "./pages/keyboard-trainer";
 import Home from "./pages/home";
+import Counter from "./pages/test";
 
 const { Header, Sider, Content } = Layout;
 
@@ -38,12 +37,12 @@ const App: React.FC = () => {
               icon: <HomeOutlined />,
               label: "Главная",
             },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: "nav 3",
-              disabled: true,
-            },
+            // {
+            //   key: "/test-page",
+            //   icon: null,
+            //   label: "Test page",
+            //   disabled: false,
+            // },
           ]}
         />
       </Sider>
@@ -72,6 +71,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/keyboard-trainer' element={<KeyboardTrainer />} />
+            <Route path='/test-page' element={<Counter />} />
             <Route
               path='*'
               element={<h1 style={{ textAlign: "center" }}>404 No page</h1>}

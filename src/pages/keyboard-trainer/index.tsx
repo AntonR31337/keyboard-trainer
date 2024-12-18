@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { Card, Col, Modal, Row, Statistic } from "antd";
+import {useEffect, useState} from "react";
+import {Card, Col, Modal, Row, Statistic} from "antd";
 import "./styles.css";
 import Metronome from "../../components/metronome";
 import StatisticPage from "../../components/statistic";
-import { useNavigate } from "react-router-dom";
-import { textStore } from "../../store/text-store";
-import { observer } from "mobx-react-lite";
-import { observable } from "mobx";
+import {useNavigate} from "react-router-dom";
+import {textStore} from "../../store/text-store";
+import {observer} from "mobx-react-lite";
+import {observable} from "mobx";
 
 const { Countdown } = Statistic;
 
@@ -16,6 +16,7 @@ const KeyboardTrainer = observer(() => {
   const {
     rightText,
     leftText,
+    loading,
     setRightText,
     setLeftText,
     resetRightText,
@@ -27,8 +28,17 @@ const KeyboardTrainer = observer(() => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
-    textStore.getNewText();
-    console.log("useEffect");
+    resetLeftText();
+    resetRightText();
+
+    let ignore = false
+    if (!ignore && rightText.length === 0) {
+      textStore.getNewText();
+    }
+
+    return () => {
+      ignore = true;
+    }
   }, []);
 
   const checkDeadline = () => {
@@ -40,8 +50,7 @@ const KeyboardTrainer = observer(() => {
   const handleKeyPress = (event: KeyboardEvent) => {
     const letter = event.key;
 
-    if (rightText.length < 20) {
-      console.log("handleKeyPress");
+    if (rightText.length === 30 && !loading) {
       textStore.getNewText();
     }
 
@@ -59,7 +68,6 @@ const KeyboardTrainer = observer(() => {
     resetLeftText();
     resetRightText();
     textStore.getNewText();
-    console.log("startGame");
   };
 
   const onFinish = () => {
