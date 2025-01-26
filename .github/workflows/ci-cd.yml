@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v4
+      - run: actions/checkout@v4
       - name: Set up Node.js
-      - uses: actions/setup-node@v2
+      - run: actions/setup-node@v2
         with:
           node-version: '20'
       - name: Install dependencies
-      - uses: yarn install
+      - run: yarn install
       - name: Build the app
-      - uses: yarn build
+      - run: yarn build
       - name: Deploy to server
-      - uses: scp -r build/* root@212.192.9.251:/var/www/react-app
+      - run: scp -r build/* root@212.192.9.251:/var/www/react-app
