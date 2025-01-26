@@ -2,28 +2,33 @@ import React from "react";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Statistic } from "antd";
 
-const StatisticPage: React.FC = () => {
+interface IResults {
+  length: number;
+  mistakes: number;
+}
+
+const StatisticPage: React.FC<IResults> = ({length, mistakes}: IResults) => {
   return (
     <>
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <Card bordered={false}>
             <Statistic
-              title='Active'
-              value={11.28}
-              precision={2}
+              title='Скорость'
+              value={ length }
+              precision={0}
               valueStyle={{ color: "#3f8600" }}
               prefix={<ArrowUpOutlined />}
-              suffix='%'
+              suffix='сим/мин'
             />
           </Card>
         </Col>
         <Col span={12}>
           <Card bordered={false}>
             <Statistic
-              title='Idle'
-              value={9.3}
-              precision={2}
+              title='Ошибок'
+              value={mistakes / length * 100}
+              precision={1}
               valueStyle={{ color: "#cf1322" }}
               prefix={<ArrowDownOutlined />}
               suffix='%'

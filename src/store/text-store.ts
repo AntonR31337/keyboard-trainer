@@ -26,7 +26,7 @@ class TextStore {
 
         runInAction(() => {
 
-          this.rightText += " " + text
+          this.rightText += !!this.rightText.length ? " " + text : text
           this.loading = false;
         });
       } catch (error) {

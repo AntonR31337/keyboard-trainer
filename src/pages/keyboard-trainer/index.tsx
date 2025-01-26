@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Card, Col, Modal, Row, Statistic} from "antd";
+import {Card, Col, Modal, Row, Statistic, Typography} from "antd";
 import "./styles.css";
 import Metronome from "../../components/metronome";
 import StatisticPage from "../../components/statistic";
@@ -26,13 +26,14 @@ const KeyboardTrainer = observer(() => {
   const [isFinish, setIsFinish] = useState<boolean>(false);
   const [deadline, setDeadline] = useState<number>(0);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [mistakesCount, setMistakesCount] = useState<number>(0);
 
   useEffect(() => {
     resetLeftText();
     resetRightText();
 
     let ignore = false
-    if (!ignore && rightText.length === 0) {
+    if (!ignore ) {
       textStore.getNewText();
     }
 
@@ -50,8 +51,16 @@ const KeyboardTrainer = observer(() => {
   const handleKeyPress = (event: KeyboardEvent) => {
     const letter = event.key;
 
+    if (letter === 'Shift') {
+      return
+    }
+
     if (rightText.length === 30 && !loading) {
       textStore.getNewText();
+    }
+
+    if (letter !== rightText[0]) {
+       setMistakesCount(mistakesCount + 1);
     }
 
     if (rightText.length > 0 && letter === rightText[0]) {
@@ -67,6 +76,7 @@ const KeyboardTrainer = observer(() => {
     setIsOpenModal(false);
     resetLeftText();
     resetRightText();
+    setMistakesCount(0);
     textStore.getNewText();
   };
 
@@ -111,6 +121,15 @@ const KeyboardTrainer = observer(() => {
         </Col>
       </Row>
 
+      {!deadline && (
+          <Row gutter={[16, 16]}>
+            <Typography.Title type={'warning'} style={{margin: '10px auto'}} >
+              Для старта начните печатать предложенный текст
+            </Typography.Title>
+          </Row>
+      )}
+
+
       <Modal
         open={isOpenModal}
         centered
@@ -120,7 +139,7 @@ const KeyboardTrainer = observer(() => {
         onOk={() => navigate("/")}
         onCancel={startGame}
       >
-        <StatisticPage />
+        <StatisticPage length={leftText.length}  mistakes={mistakesCount}/>
       </Modal>
     </>
   );

@@ -8,7 +8,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <StatisticPage />
+      <StatisticPage length={2} mistakes={2} />
       <Flex style={{ marginTop: "16px" }}>
         <Button
           danger
